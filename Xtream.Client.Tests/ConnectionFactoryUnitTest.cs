@@ -21,11 +21,13 @@ namespace Xtream.Client.Tests
         [InlineData("http://viqdp-o.com:22561/get.php?username=&password=&type=m3u_plus&output=ts", "http://viqdp-o.com:22561", "", "")]
         public void Valid_ConnectionInfoFromUrl(string url, string server, string user, string pwd)
         {
-            IXtConnectionFactory connectionFactory = new XtUrlConnectionFactory(url);
-           var conection =  connectionFactory.Create();
+            var conection = SampleXtreamConnectionFactory.Create(url);
+            var basicConection = SampleXtreamConnectionFactory.Create(server, user, pwd);
             conection.Server.ShouldBe(server);
             conection.Password.ShouldBe(pwd);
             conection.UserName.ShouldBe(user);
+
+            basicConection.ToString().ShouldBe(conection.ToString());
         }
 
         [Theory]
