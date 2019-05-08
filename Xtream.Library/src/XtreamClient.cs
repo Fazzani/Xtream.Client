@@ -3,25 +3,23 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Xtream.Client.XtreamConnectionInfo;
 
 namespace Xtream.Client
 {
     public class XtreamClient : IXtreamClient, IDisposable
     {
-        private readonly string _xtreamUrlPattern;
         private readonly IXtreamReader _xtreamReader;
-        private const string  RegexXtreamUrl =@"^(?<portocol>https?)://(?<host>.*)(:(?<port>\d{2,5}))?/get\.php\?username=(?<username>.*)&password=(?<password>\w+)";
+        private const string DefaultRegexXtreamUrl = @"^(?<host>(?:https?://(?:.*)(:(?:\d{2,5}))?))/get\.php\?username=(?<username>.*)&password=(?<password>\w*)";
 
-        public XtreamClient()
+        public XtreamClient(IXtConnectionFactory connectionFactory)
         {
-            _xtreamUrlPattern = RegexXtreamUrl;
-            _xtreamReader = new XtreamJsonReader(DefaultHttpClientFactory.Default);
+            _xtreamReader = new XtreamJsonReader(DefaultHttpClientFactory.Default, connectionFactory);
         }
 
-        public XtreamClient(IHttpClientFactory httpClientFactory)
+        public XtreamClient(IXtConnectionFactory connectionFactory, IHttpClientFactory httpClientFactory)
         {
-            _xtreamUrlPattern = RegexXtreamUrl;
-            _xtreamReader = new XtreamJsonReader(httpClientFactory);
+            _xtreamReader = new XtreamJsonReader(httpClientFactory, connectionFactory);
         }
 
         public XtreamClient(IXtreamReader xtreamReader)
@@ -29,40 +27,35 @@ namespace Xtream.Client
             _xtreamReader = xtreamReader;
         }
 
-        public XtreamClient(string urlPattern, IXtreamReader xtreamReader)
-            : this(xtreamReader)
-        {
-            _xtreamUrlPattern = urlPattern;
-        }
+        public Task<PlayerApi> GetUserAndServerInfoAsync( CancellationToken cancellationToken) =>
+            _xtreamReader.GetFromApi<PlayerApi>( XtreamApiEnum.Player_Api, cancellationToken);
 
-        public Task<PlayerApi> GetUserAndServerInfoAsync(string playlistUrl, CancellationToken cancellationToken) =>
-            _xtreamReader.GetFromApi<PlayerApi>(playlistUrl, _xtreamUrlPattern, XtreamApiEnum.Player_Api, cancellationToken);
+        public Task<XtreamPanel> GetPanelAsync(CancellationToken cancellationToken) =>
+             _xtreamReader.GetFromApi<XtreamPanel>(XtreamApiEnum.Panel_Api, cancellationToken);
 
-        public Task<XtreamPanel> GetPanelAsync(string playlistUrl, CancellationToken cancellationToken) =>
-             _xtreamReader.GetFromApi<XtreamPanel>(playlistUrl, _xtreamUrlPattern, XtreamApiEnum.Panel_Api, cancellationToken);
+        public Task<List<Channels>> GetVodStreamsAsync( CancellationToken cancellationToken) =>
+             _xtreamReader.GetFromApi<List<Channels>>(XtreamApiEnum.VOD_Streams, cancellationToken);
 
-        public Task<List<Channels>> GetVodStreamsAsync(string playlistUrl, CancellationToken cancellationToken) =>
-             _xtreamReader.GetFromApi<List<Channels>>(playlistUrl, _xtreamUrlPattern, XtreamApiEnum.VOD_Streams, cancellationToken);
+        public Task<List<Channels>> GetLiveStreamsAsync( CancellationToken cancellationToken) =>
+             _xtreamReader.GetFromApi<List<Channels>>(XtreamApiEnum.LiveStreams, cancellationToken);
 
-        public Task<List<Channels>> GetLiveStreamsAsync(string playlistUrl, CancellationToken cancellationToken) =>
-             _xtreamReader.GetFromApi<List<Channels>>(playlistUrl, _xtreamUrlPattern, XtreamApiEnum.LiveStreams, cancellationToken);
+        public Task<List<Channels>> GetLiveStreamsByCategoriesAsync(string categoryId, CancellationToken cancellationToken) =>
+             _xtreamReader.GetFromApi<List<Channels>>(XtreamApiEnum.LiveStreamsByCategories, cancellationToken, categoryId);
 
-        public Task<List<Channels>> GetLiveStreamsByCategoriesAsync(string playlistUrl, string categoryId, CancellationToken cancellationToken) =>
-             _xtreamReader.GetFromApi<List<Channels>>(playlistUrl, _xtreamUrlPattern, XtreamApiEnum.LiveStreamsByCategories, cancellationToken, categoryId);
+        public Task<List<Live>> GetLiveCategoriesAsync(CancellationToken cancellationToken) =>
+             _xtreamReader.GetFromApi<List<Live>>(XtreamApiEnum.LiveCategories, cancellationToken);
 
-        public Task<List<Live>> GetLiveCategoriesAsync(string playlistUrl, CancellationToken cancellationToken) =>
-             _xtreamReader.GetFromApi<List<Live>>(playlistUrl, _xtreamUrlPattern, XtreamApiEnum.LiveCategories, cancellationToken);
+        public Task<List<Epg_Listings>> GetAllEpgAsync(CancellationToken cancellationToken) =>
+             _xtreamReader.GetFromApi<List<Epg_Listings>>(XtreamApiEnum.AllEpg, cancellationToken);
 
-        public Task<List<Epg_Listings>> GetAllEpgAsync(string playlistUrl, CancellationToken cancellationToken) =>
-             _xtreamReader.GetFromApi<List<Epg_Listings>>(playlistUrl, _xtreamUrlPattern, XtreamApiEnum.AllEpg, cancellationToken);
+        public Task<List<Epg_Listings>> GetShortEpgForStreamAsync(string streamId, CancellationToken cancellationToken) =>
+            _xtreamReader.GetFromApi<List<Epg_Listings>>(XtreamApiEnum.ShortEpgForStream, cancellationToken, streamId);
 
-        public Task<List<Epg_Listings>> GetShortEpgForStreamAsync(string playlistUrl, string streamId, CancellationToken cancellationToken) =>
-            _xtreamReader.GetFromApi<List<Epg_Listings>>(playlistUrl, _xtreamUrlPattern, XtreamApiEnum.ShortEpgForStream, cancellationToken, streamId);
+        public Task<PlayerApi> GetXmltvAsync(CancellationToken cancellationToken) =>
+             _xtreamReader.GetFromApi<PlayerApi>(XtreamApiEnum.Xmltv, cancellationToken);
 
-        public Task<PlayerApi> GetXmltvAsync(string playlistUrl, CancellationToken cancellationToken) =>
-             _xtreamReader.GetFromApi<PlayerApi>(playlistUrl, _xtreamUrlPattern, XtreamApiEnum.Xmltv, cancellationToken);
-
-        public bool IsXtreamPlaylist(string playlistUrl) => Regex.Match(playlistUrl, _xtreamUrlPattern, RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase).Success;
+        public static bool IsXtreamPlaylist(string playlistUrl, string xtreamUrlPattern= DefaultRegexXtreamUrl) => 
+            Regex.Match(playlistUrl, xtreamUrlPattern, RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase).Success;
 
         public void Dispose()
         {

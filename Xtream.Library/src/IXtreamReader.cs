@@ -6,6 +6,6 @@ namespace Xtream.Client
 {
     public interface IXtreamReader: IDisposable
     {
-        Task<T> GetFromApi<T>(string playlistUrl, string xtreamUrlPattern, XtreamApiEnum xtreamApiEnum, CancellationToken cancellationToken, params string[] extraParams);
+        Task<T> GetFromApi<T>(XtreamApiEnum xtreamApiEnum, CancellationToken cancellationToken, params string[] extraParams);
     }
 }
