@@ -9,6 +9,7 @@
     <PackageProjectUrl></PackageProjectUrl>
     <RepositoryUrl>https://github.com/Fazzani/Xtream.Client</RepositoryUrl>
     <PackageTags>xtream</PackageTags>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
