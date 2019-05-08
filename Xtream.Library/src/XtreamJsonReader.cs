@@ -27,13 +27,21 @@ namespace Xtream.Client
 
         public async Task<T> GetFromApi<T>(XtreamApiEnum xtreamApiEnum, CancellationToken cancellationToken, params string[] extraParams)
         {
-            var json = await _client.GetStringAsync(new Uri(GetApiUrl(xtreamApiEnum, extraParams)));
+            var jsonContent = await _client.GetStringAsync(new Uri(GetApiUrl(xtreamApiEnum, extraParams)));
+
             cancellationToken.ThrowIfCancellationRequested();
-            json = Regex.Replace(json, @"(""[^""\\]*(?:\\.[^""\\]*)*"")|\s+", "$1");
-            json = Regex.Replace(json, "\"\\d+\":{", "{", RegexOptions.Multiline);
-            json = json.Replace("\"available_channels\":{", "\"available_channels\":[");
-            json = json.Replace("}}}", "}]}");
-            return JsonConvert.DeserializeObject<T>(json);
+
+            jsonContent = TrimJsonAndConvertChannelsToArray(jsonContent);
+            return JsonConvert.DeserializeObject<T>(jsonContent);
+        }
+
+        private static string TrimJsonAndConvertChannelsToArray(string jsonContent)
+        {
+            jsonContent = Regex.Replace(jsonContent, @"(""[^""\\]*(?:\\.[^""\\]*)*"")|\s+", "$1");
+            jsonContent = Regex.Replace(jsonContent, "\"\\d+\":{", "{", RegexOptions.Multiline);
+            jsonContent = jsonContent.Replace("\"available_channels\":{", "\"available_channels\":[");
+            jsonContent = jsonContent.Replace("}}}", "}]}");
+            return jsonContent;
         }
 
         protected virtual string GetApiUrl(XtreamApiEnum xtreamApiEnum, params string[] extraParams)
