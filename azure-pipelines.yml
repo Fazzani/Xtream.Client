@@ -1,7 +1,7 @@
 name: $(Date:yyyyMMdd).$(Rev:.r)
 
 variables:
-- BuildConfiguration: Release
+- buildConfiguration: Release
 
 strategy:
   matrix:
