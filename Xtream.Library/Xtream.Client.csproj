@@ -2,6 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Company>Synker</Company>
+    <Authors>Heni Fazzani</Authors>
+    <Description>Xtream Api c# client</Description>
+    <PackageProjectUrl></PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Fazzani/Xtream.Client</RepositoryUrl>
+    <PackageTags>xtream</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
