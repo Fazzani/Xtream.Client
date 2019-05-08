@@ -1,4 +1,8 @@
+using Moq;
+using Moq.Protected;
+using Newtonsoft.Json;
 using Shouldly;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -122,6 +126,53 @@ namespace Xtream.Client.Tests
         public async Task IsXtreamPlaylist_Shoold_false(string url)
         {
             XtreamClient.IsXtreamPlaylist(url).ShouldBe(false);
+        }
+
+        [Theory]
+        [InlineData("https://gist.githubusercontent.com/Fazzani/722f67c30ada8bac4602f62a2aaccff6/raw/2d73244bb4b657514417a178bef5d299c65998b6/testmn.json")]
+        public async Task xtreamJsonReader_GetPanelInfo(string url)
+        {
+            var panelJsonData = await GetXtreamPanel(url);
+
+            var mockHttpClientFactory = new Mock<IHttpClientFactory>();
+            MockHttpClient(mockHttpClientFactory, panelJsonData);
+
+            var xtreamJsonReader = new XtreamJsonReader(mockHttpClientFactory.Object, new XtBasicConnectionFactory("http://server.tes", "", ""));
+            var panel = await xtreamJsonReader.GetFromApi<XtreamPanel>(XtreamApiEnum.Panel_Api, CancellationToken.None);
+
+            panel.Categories.ShouldNotBeNull();
+        }
+
+        private static void MockHttpClient(Mock<IHttpClientFactory> mockHttpClientFactory, string panelJsonData)
+        {
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            handlerMock
+               .Protected()
+               // Setup the PROTECTED method to mock
+               .Setup<Task<HttpResponseMessage>>(
+                  "SendAsync",
+                  ItExpr.IsAny<HttpRequestMessage>(),
+                  ItExpr.IsAny<CancellationToken>()
+               )
+               // prepare the expected response of the mocked http call
+               .ReturnsAsync(new HttpResponseMessage()
+               {
+                   StatusCode = HttpStatusCode.OK,
+                   Content = new StringContent(panelJsonData),
+               })
+               .Verifiable();
+
+            mockHttpClientFactory.Setup(x => x.Create()).Returns(new HttpClient(handlerMock.Object));
+        }
+
+        private static async Task<string> GetXtreamPanel(string url)
+        {
+            using (var client = new HttpClient())
+            {
+                var response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStringAsync();
+            }
         }
     }
 }

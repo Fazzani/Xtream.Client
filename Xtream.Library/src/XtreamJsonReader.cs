@@ -29,6 +29,10 @@ namespace Xtream.Client
         {
             var json = await _client.GetStringAsync(new Uri(GetApiUrl(xtreamApiEnum, extraParams)));
             cancellationToken.ThrowIfCancellationRequested();
+            json = Regex.Replace(json, @"(""[^""\\]*(?:\\.[^""\\]*)*"")|\s+", "$1");
+            json = Regex.Replace(json, "\"\\d+\":{", "{", RegexOptions.Multiline);
+            json = json.Replace("\"available_channels\":{", "\"available_channels\":[");
+            json = json.Replace("}}}", "}]}");
             return JsonConvert.DeserializeObject<T>(json);
         }
 
