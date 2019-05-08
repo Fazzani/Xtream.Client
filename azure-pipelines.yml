@@ -3,6 +3,17 @@ name: $(Date:yyyyMMdd)$(Rev:.r)
 variables:
   buildConfiguration: Release
 
+trigger:
+  tags:
+    include:
+    - v*
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+    - readme.md
+
 strategy:
   matrix:
     linux:
@@ -12,9 +23,6 @@ strategy:
 
 pool:
   vmImage: $(imageName)
-
-trigger:
-- master
 
 steps:
 - script: dotnet restore
@@ -65,7 +73,8 @@ steps:
     testResultsFiles: '/home/vsts/work/**/*.trx'
 
 - bash: |
-   dotnet pack Xtream.Library/Xtream.Client.csproj -o ./out -c $(buildConfiguration) /p:PackageVersion="1.0.$(Build.BuildNumber)"
+   dotnet pack Xtream.Library/Xtream.Client.csproj -o ./out -c $(buildConfiguration) /p:PackageVersion="1.0.$(Build.SourceBranchName)"
    dotnet nuget push Xtream.Library/out/ -k "$(NUGET_API_KEY)" -s https://api.nuget.org/v3/index.json
   displayName: 'Bash Script'
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags'))
 
