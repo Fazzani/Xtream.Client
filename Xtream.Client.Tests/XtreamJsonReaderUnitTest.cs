@@ -141,6 +141,9 @@ namespace Xtream.Client.Tests
             var panel = await xtreamJsonReader.GetFromApi<XtreamPanel>(XtreamApiEnum.Panel_Api, CancellationToken.None);
 
             panel.Categories.ShouldNotBeNull();
+            panel.User_info.ShouldNotBeNull();
+            panel.Server_info.ShouldNotBeNull();
+            panel.Available_Channels.ShouldNotBeNull();
         }
 
         private static void MockHttpClient(Mock<IHttpClientFactory> mockHttpClientFactory, string panelJsonData)
