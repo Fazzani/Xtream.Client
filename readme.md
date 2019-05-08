@@ -7,7 +7,7 @@ Xtream .net standard client for Xtream Api
 ## Installation
 
 ```sh
- dotnet add package Xtream.Client --version 1.0.20190508.4 
+ dotnet add package Xtream.Client
  ```
 
 ## Examples
