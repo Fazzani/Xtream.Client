@@ -4,12 +4,10 @@ variables:
   buildConfiguration: Release
 
 trigger:
-  tags:
-    include:
-    - *
   branches:
     include:
     - master
+    - refs/tags/*
   paths:
     exclude:
     - readme.md
