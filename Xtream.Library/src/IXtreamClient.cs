@@ -6,14 +6,14 @@ namespace Xtream.Client
 {
     public interface IXtreamClient
     {
-        Task<List<Epg_Listings>> GetAllEpgAsync(CancellationToken cancellationToken = default);
-        Task<List<Live>> GetLiveCategoriesAsync(CancellationToken cancellationToken = default);
-        Task<List<Channels>> GetLiveStreamsAsync(CancellationToken cancellationToken = default);
-        Task<List<Channels>> GetLiveStreamsByCategoriesAsync(string categoryId, CancellationToken cancellationToken = default);
-        Task<XtreamPanel> GetPanelAsync(CancellationToken cancellationToken = default);
-        Task<List<Epg_Listings>> GetShortEpgForStreamAsync(string streamId, CancellationToken cancellationToken = default);
-        Task<PlayerApi> GetUserAndServerInfoAsync(CancellationToken cancellationToken = default);
-        Task<List<Channels>> GetVodStreamsAsync(CancellationToken cancellationToken = default);
-        Task<PlayerApi> GetXmltvAsync(CancellationToken cancellationToken = default);
+        Task<List<Epg_Listings>> GetAllEpgAsync(ConnectionInfo connectionInfo, CancellationToken cancellationToken = default);
+        Task<List<Live>> GetLiveCategoriesAsync(ConnectionInfo connectionInfo, CancellationToken cancellationToken = default);
+        Task<List<Channels>> GetLiveStreamsAsync(ConnectionInfo connectionInfo, CancellationToken cancellationToken = default);
+        Task<List<Channels>> GetLiveStreamsByCategoriesAsync(ConnectionInfo connectionInfo, string categoryId, CancellationToken cancellationToken = default);
+        Task<XtreamPanel> GetPanelAsync(ConnectionInfo connectionInfo, CancellationToken cancellationToken = default);
+        Task<List<Epg_Listings>> GetShortEpgForStreamAsync(ConnectionInfo connectionInfo, string streamId, CancellationToken cancellationToken = default);
+        Task<PlayerApi> GetUserAndServerInfoAsync(ConnectionInfo connectionInfo, CancellationToken cancellationToken = default);
+        Task<List<Channels>> GetVodStreamsAsync(ConnectionInfo connectionInfo, CancellationToken cancellationToken = default);
+        Task<PlayerApi> GetXmltvAsync(ConnectionInfo connectionInfo, CancellationToken cancellationToken = default);
     }
 }

@@ -1,6 +1,5 @@
 using Moq;
 using Moq.Protected;
-using Newtonsoft.Json;
 using Shouldly;
 using System.Net;
 using System.Net.Http;
@@ -19,72 +18,72 @@ namespace Xtream.Client.Tests
         [InlineData("http://test-mo.com:22561/get.php?username=39h7mtn013&password=omP5PMVP6Q")]
         public async Task Not_Throw_InvalidXtreamUrlFormatException(string url)
         {
-            var xtreamClient = new XtreamClient(new XtUrlConnectionFactory(url));
-            await Should.ThrowAsync<HttpRequestException>(xtreamClient.GetAllEpgAsync( CancellationToken.None));
+            var xtreamClient = new XtreamClient(DefaultHttpClientFactory.Default);
+            await Should.ThrowAsync<HttpRequestException>(xtreamClient.GetAllEpgAsync(new XtUrlConnectionFactory(url).Create(), CancellationToken.None));
         }
 
         [Theory]
         [InlineData("http://viqdp-o.com:22561/get.php?username=39h7mtn013&password=omP5PMVP6Q&type=m3u_plus&output=ts")]
         public async Task GetLiveCategoriesAsync_Not_Throw_InvalidXtreamUrlFormatException(string url)
         {
-            var xtreamClient = new XtreamClient(new XtUrlConnectionFactory(url));
-            await Should.ThrowAsync<HttpRequestException>(xtreamClient.GetLiveCategoriesAsync( CancellationToken.None));
+            var xtreamClient = new XtreamClient(DefaultHttpClientFactory.Default);
+            await Should.ThrowAsync<HttpRequestException>(xtreamClient.GetLiveCategoriesAsync(new XtUrlConnectionFactory(url).Create(),CancellationToken.None));
         }
 
         [Theory]
         [InlineData("http://viqdp-o.com:22561/get.php?username=39h7mtn013&password=omP5PMVP6Q&type=m3u_plus&output=ts")]
         public async Task GetLiveStreamsAsync_Not_Throw_InvalidXtreamUrlFormatException(string url)
         {
-            var xtreamClient = new XtreamClient(new XtUrlConnectionFactory(url));
-            await Should.ThrowAsync<HttpRequestException>(xtreamClient.GetLiveStreamsAsync( CancellationToken.None));
+            var xtreamClient = new XtreamClient(DefaultHttpClientFactory.Default);
+            await Should.ThrowAsync<HttpRequestException>(xtreamClient.GetLiveStreamsAsync(new XtUrlConnectionFactory(url).Create(),CancellationToken.None));
         }
 
         [Theory]
         [InlineData("http://viqdp-o.com:22561/get.php?username=39h7mtn013&password=omP5PMVP6Q&type=m3u_plus&output=ts")]
         public async Task GetLiveStreamsByCategoriesAsync_Not_Throw_InvalidXtreamUrlFormatException(string url)
         {
-            var xtreamClient = new XtreamClient(new XtUrlConnectionFactory(url));
-            await Should.ThrowAsync<HttpRequestException>(xtreamClient.GetLiveStreamsByCategoriesAsync("1", CancellationToken.None));
+            var xtreamClient = new XtreamClient(DefaultHttpClientFactory.Default);
+            await Should.ThrowAsync<HttpRequestException>(xtreamClient.GetLiveStreamsByCategoriesAsync(new XtUrlConnectionFactory(url).Create(),"1", CancellationToken.None));
         }
 
         [Theory]
         [InlineData("http://viqdp-o.com:22561/get.php?username=39h7mtn013&password=omP5PMVP6Q&type=m3u_plus&output=ts")]
         public async Task GetPanelAsync_Not_Throw_InvalidXtreamUrlFormatException(string url)
         {
-            var xtreamClient = new XtreamClient(new XtUrlConnectionFactory(url));
-            await Should.ThrowAsync<HttpRequestException>(xtreamClient.GetPanelAsync( CancellationToken.None));
+            var xtreamClient = new XtreamClient(DefaultHttpClientFactory.Default);
+            await Should.ThrowAsync<HttpRequestException>(xtreamClient.GetPanelAsync(new XtUrlConnectionFactory(url).Create(), CancellationToken.None));
         }
 
         [Theory]
         [InlineData("http://viqdp-o.com:22561/get.php?username=39h7mtn013&password=omP5PMVP6Q&type=m3u_plus&output=ts")]
         public async Task GetShortEpgForStreamAsync_Not_Throw_InvalidXtreamUrlFormatException(string url)
         {
-            var xtreamClient = new XtreamClient(new XtUrlConnectionFactory(url));
-            await Should.ThrowAsync<HttpRequestException>(xtreamClient.GetShortEpgForStreamAsync("1", CancellationToken.None));
+            var xtreamClient = new XtreamClient(DefaultHttpClientFactory.Default);
+            await Should.ThrowAsync<HttpRequestException>(xtreamClient.GetShortEpgForStreamAsync(new XtUrlConnectionFactory(url).Create(), "1", CancellationToken.None));
         }
 
         [Theory]
         [InlineData("http://viqdp-o.com:22561/get.php?username=39h7mtn013&password=omP5PMVP6Q&type=m3u_plus&output=ts")]
         public async Task GetUserAndServerInfoAsync_Not_Throw_InvalidXtreamUrlFormatException(string url)
         {
-            var xtreamClient = new XtreamClient(new XtUrlConnectionFactory(url));
-            await Should.ThrowAsync<HttpRequestException>(xtreamClient.GetUserAndServerInfoAsync( CancellationToken.None));
+            var xtreamClient = new XtreamClient(DefaultHttpClientFactory.Default);
+            await Should.ThrowAsync<HttpRequestException>(xtreamClient.GetUserAndServerInfoAsync(new XtUrlConnectionFactory(url).Create(), CancellationToken.None));
         }
 
         [Theory]
         [InlineData("http://viqdp-o.com:22561/get.php?username=39h7mtn013&password=omP5PMVP6Q&type=m3u_plus&output=ts")]
         public async Task GetVodStreamsAsync_Not_Throw_InvalidXtreamUrlFormatException(string url)
         {
-            var xtreamClient = new XtreamClient(new XtUrlConnectionFactory(url));
-            await Should.ThrowAsync<HttpRequestException>(xtreamClient.GetVodStreamsAsync(CancellationToken.None));
+            var xtreamClient = new XtreamClient(DefaultHttpClientFactory.Default);
+            await Should.ThrowAsync<HttpRequestException>(xtreamClient.GetVodStreamsAsync(new XtUrlConnectionFactory(url).Create(), CancellationToken.None));
         }
 
         [Theory]
         [InlineData("http://viqdp-o.com:22561/get.php?username=39h7mtn013&password=omP5PMVP6Q&type=m3u_plus&output=ts")]
         public async Task GetXmltvAsync_Not_Throw_InvalidXtreamUrlFormatException(string url)
         {
-            var xtreamClient = new XtreamClient(new XtUrlConnectionFactory(url));
-            await Should.ThrowAsync<HttpRequestException>(xtreamClient.GetXmltvAsync(CancellationToken.None));
+            var xtreamClient = new XtreamClient(DefaultHttpClientFactory.Default);
+            await Should.ThrowAsync<HttpRequestException>(xtreamClient.GetXmltvAsync(new XtUrlConnectionFactory(url).Create(), CancellationToken.None));
         }
 
         [Theory]
@@ -94,8 +93,8 @@ namespace Xtream.Client.Tests
         [InlineData("http://viqdp-o.com:80", "", "")]
         public async Task GetXmltvAsync_BasicAuth_Not_Throw_InvalidXtreamUrlFormatException(string server, string username, string password)
         {
-            var xtreamClient = new XtreamClient(new XtBasicConnectionFactory(server, username, password));
-            await Should.ThrowAsync<HttpRequestException>(xtreamClient.GetXmltvAsync(CancellationToken.None));
+            var xtreamClient = new XtreamClient(DefaultHttpClientFactory.Default);
+            await Should.ThrowAsync<HttpRequestException>(xtreamClient.GetXmltvAsync(new XtBasicConnectionFactory(server, username, password).Create(), CancellationToken.None));
         }
 
         [Theory]
@@ -105,8 +104,8 @@ namespace Xtream.Client.Tests
         [InlineData("http://viqdp-o.com:80", "", "")]
         public async Task GetLiveStreamsAsync_BasicAuth_Not_Throw_InvalidXtreamUrlFormatException(string server, string username, string password)
         {
-            var xtreamClient = new XtreamClient(new XtBasicConnectionFactory(server, username, password));
-            await Should.ThrowAsync<HttpRequestException>(xtreamClient.GetLiveStreamsAsync(CancellationToken.None));
+            var xtreamClient = new XtreamClient(DefaultHttpClientFactory.Default);
+            await Should.ThrowAsync<HttpRequestException>(xtreamClient.GetLiveStreamsAsync(new XtBasicConnectionFactory(server, username, password).Create(), CancellationToken.None));
         }
 
         [Theory]
@@ -137,8 +136,9 @@ namespace Xtream.Client.Tests
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
             MockHttpClient(mockHttpClientFactory, panelJsonData);
 
-            var xtreamJsonReader = new XtreamJsonReader(mockHttpClientFactory.Object, new XtBasicConnectionFactory("http://server.tes", "", ""));
-            var panel = await xtreamJsonReader.GetFromApi<XtreamPanel>(XtreamApiEnum.Panel_Api, CancellationToken.None);
+            var xtreamJsonReader = new XtreamJsonReader(mockHttpClientFactory.Object);
+            var connectionInfo = new XtBasicConnectionFactory("http://server.tes", "", "").Create();
+            var panel = await xtreamJsonReader.GetFromApi<XtreamPanel>(connectionInfo, XtreamApiEnum.Panel_Api, CancellationToken.None);
 
             panel.Categories.ShouldNotBeNull();
             panel.User_info.ShouldNotBeNull();

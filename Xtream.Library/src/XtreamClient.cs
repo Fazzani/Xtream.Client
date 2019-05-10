@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Xtream.Client.XtreamConnectionInfo;
 
 namespace Xtream.Client
 {
@@ -16,19 +15,10 @@ namespace Xtream.Client
         /// Using default json reader
         /// </summary>
         /// <param name="connectionFactory"></param>
-        public XtreamClient(IXtConnectionFactory connectionFactory)
-        {
-            _xtreamReader = new XtreamJsonReader(DefaultHttpClientFactory.Default, connectionFactory);
-        }
-
-        /// <summary>
-        /// Using default json reader
-        /// </summary>
-        /// <param name="connectionFactory"></param>
         /// <param name="httpClientFactory"></param>
-        public XtreamClient(IXtConnectionFactory connectionFactory, IHttpClientFactory httpClientFactory)
+        public XtreamClient(IHttpClientFactory httpClientFactory)
         {
-            _xtreamReader = new XtreamJsonReader(httpClientFactory, connectionFactory);
+            _xtreamReader = new XtreamJsonReader(httpClientFactory);
         }
 
         public XtreamClient(IXtreamReader xtreamReader)
@@ -36,32 +26,32 @@ namespace Xtream.Client
             _xtreamReader = xtreamReader;
         }
 
-        public Task<PlayerApi> GetUserAndServerInfoAsync(CancellationToken cancellationToken) =>
-            _xtreamReader.GetFromApi<PlayerApi>(XtreamApiEnum.Player_Api, cancellationToken);
+        public Task<PlayerApi> GetUserAndServerInfoAsync(ConnectionInfo connectionInfo, CancellationToken cancellationToken) =>
+            _xtreamReader.GetFromApi<PlayerApi>(connectionInfo, XtreamApiEnum.Player_Api, cancellationToken);
 
-        public Task<XtreamPanel> GetPanelAsync(CancellationToken cancellationToken) =>
-             _xtreamReader.GetFromApi<XtreamPanel>(XtreamApiEnum.Panel_Api, cancellationToken);
+        public Task<XtreamPanel> GetPanelAsync(ConnectionInfo connectionInfo, CancellationToken cancellationToken) =>
+             _xtreamReader.GetFromApi<XtreamPanel>(connectionInfo, XtreamApiEnum.Panel_Api, cancellationToken);
 
-        public Task<List<Channels>> GetVodStreamsAsync(CancellationToken cancellationToken) =>
-             _xtreamReader.GetFromApi<List<Channels>>(XtreamApiEnum.VOD_Streams, cancellationToken);
+        public Task<List<Channels>> GetVodStreamsAsync(ConnectionInfo connectionInfo, CancellationToken cancellationToken) =>
+             _xtreamReader.GetFromApi<List<Channels>>(connectionInfo, XtreamApiEnum.VOD_Streams, cancellationToken);
 
-        public Task<List<Channels>> GetLiveStreamsAsync(CancellationToken cancellationToken) =>
-             _xtreamReader.GetFromApi<List<Channels>>(XtreamApiEnum.LiveStreams, cancellationToken);
+        public Task<List<Channels>> GetLiveStreamsAsync(ConnectionInfo connectionInfo, CancellationToken cancellationToken) =>
+             _xtreamReader.GetFromApi<List<Channels>>(connectionInfo, XtreamApiEnum.LiveStreams, cancellationToken);
 
-        public Task<List<Channels>> GetLiveStreamsByCategoriesAsync(string categoryId, CancellationToken cancellationToken) =>
-             _xtreamReader.GetFromApi<List<Channels>>(XtreamApiEnum.LiveStreamsByCategories, cancellationToken, categoryId);
+        public Task<List<Channels>> GetLiveStreamsByCategoriesAsync(ConnectionInfo connectionInfo, string categoryId, CancellationToken cancellationToken) =>
+             _xtreamReader.GetFromApi<List<Channels>>(connectionInfo, XtreamApiEnum.LiveStreamsByCategories, cancellationToken, categoryId);
 
-        public Task<List<Live>> GetLiveCategoriesAsync(CancellationToken cancellationToken) =>
-             _xtreamReader.GetFromApi<List<Live>>(XtreamApiEnum.LiveCategories, cancellationToken);
+        public Task<List<Live>> GetLiveCategoriesAsync(ConnectionInfo connectionInfo, CancellationToken cancellationToken) =>
+             _xtreamReader.GetFromApi<List<Live>>(connectionInfo, XtreamApiEnum.LiveCategories, cancellationToken);
 
-        public Task<List<Epg_Listings>> GetAllEpgAsync(CancellationToken cancellationToken) =>
-             _xtreamReader.GetFromApi<List<Epg_Listings>>(XtreamApiEnum.AllEpg, cancellationToken);
+        public Task<List<Epg_Listings>> GetAllEpgAsync(ConnectionInfo connectionInfo, CancellationToken cancellationToken) =>
+             _xtreamReader.GetFromApi<List<Epg_Listings>>(connectionInfo, XtreamApiEnum.AllEpg, cancellationToken);
 
-        public Task<List<Epg_Listings>> GetShortEpgForStreamAsync(string streamId, CancellationToken cancellationToken) =>
-            _xtreamReader.GetFromApi<List<Epg_Listings>>(XtreamApiEnum.ShortEpgForStream, cancellationToken, streamId);
+        public Task<List<Epg_Listings>> GetShortEpgForStreamAsync(ConnectionInfo connectionInfo, string streamId, CancellationToken cancellationToken) =>
+            _xtreamReader.GetFromApi<List<Epg_Listings>>(connectionInfo, XtreamApiEnum.ShortEpgForStream, cancellationToken, streamId);
 
-        public Task<PlayerApi> GetXmltvAsync(CancellationToken cancellationToken) =>
-             _xtreamReader.GetFromApi<PlayerApi>(XtreamApiEnum.Xmltv, cancellationToken);
+        public Task<PlayerApi> GetXmltvAsync(ConnectionInfo connectionInfo, CancellationToken cancellationToken) =>
+             _xtreamReader.GetFromApi<PlayerApi>(connectionInfo, XtreamApiEnum.Xmltv, cancellationToken);
 
         public static bool IsXtreamPlaylist(string playlistUrl, string xtreamUrlPattern = DefaultRegexXtreamUrl) =>
             Regex.Match(playlistUrl, xtreamUrlPattern, RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase).Success;
