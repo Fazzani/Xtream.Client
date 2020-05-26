@@ -1,5 +1,6 @@
 ﻿# Xtream Client
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/abf760e35131459c8564da39b751c0cb)](https://app.codacy.com/manual/tunisienheni/Xtream.Client?utm_source=github.com&utm_medium=referral&utm_content=Fazzani/Xtream.Client&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://dev.azure.com/henifazzani/Xtream.Client/_apis/build/status/Xtream.Client-CI?branchName=master)](https://dev.azure.com/henifazzani/Xtream.Client/_build/latest?definitionId=17&branchName=master)
 
 Xtream .net standard client for Xtream Api
