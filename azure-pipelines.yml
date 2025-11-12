@@ -1,7 +1,9 @@
 name: $(Date:yyyyMMdd)$(Rev:.r)
 
 variables:
-  buildConfiguration: Release
+  - name: buildConfiguration
+    value: Release
+  - group: Common
 
 trigger:
   branches:
@@ -79,7 +81,7 @@ steps:
 
 - bash: |
    dotnet pack Xtream.Library/Xtream.Client.csproj -o ./out -c $(buildConfiguration) /p:PackageVersion="$(Build.SourceBranchName)"
-   dotnet nuget push ./out/ -k "$(NUGET_API_KEY)" -s https://api.nuget.org/v3/index.json
+   dotnet nuget push ./out/ -k "$(Common.NUGET_API_KEY)" -s https://api.nuget.org/v3/index.json
   displayName: 'Bash Script'
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags'))
 
