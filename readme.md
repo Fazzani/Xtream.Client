@@ -3,15 +3,19 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/abf760e35131459c8564da39b751c0cb)](https://app.codacy.com/manual/tunisienheni/Xtream.Client?utm_source=github.com&utm_medium=referral&utm_content=Fazzani/Xtream.Client&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://dev.azure.com/henifazzani/Xtream.Client/_apis/build/status/Xtream.Client-CI?branchName=master)](https://dev.azure.com/henifazzani/Xtream.Client/_build/latest?definitionId=17&branchName=master)
 
-A .NET Standard client library for Xtream API, providing a simple and efficient way to interact with Xtream-based IPTV services.
+A .NET 9 client library for Xtream API, providing a simple and efficient way to interact with Xtream-based IPTV services.
 
 ## Features
 
 - 🚀 Simple and intuitive API
 - 🔧 Configurable HTTP client with User-Agent support
-- 📦 .NET Standard 2.0+ compatible
+- 📦 .NET 9 compatible
 - ✅ Comprehensive test coverage
 - 🔐 Support for URL-based and basic authentication
+
+## Requirements
+
+- .NET 9.0 SDK or later
 
 ## Installation
 

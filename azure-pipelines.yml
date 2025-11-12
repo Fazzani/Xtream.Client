@@ -24,6 +24,12 @@ pool:
   vmImage: $(imageName)
 
 steps:
+- task: UseDotNet@2
+  displayName: 'Install .NET 9 SDK'
+  inputs:
+    packageType: 'sdk'
+    version: '9.x'
+    
 - script: dotnet restore
   displayName: 'dotnet restore'
 
