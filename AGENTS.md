@@ -4,7 +4,7 @@ This document provides instructions and context for AI agents working on the Xtr
 
 ## Project Overview
 
-Xtream.Client is a .NET Standard library that provides a client for interacting with Xtream-based IPTV APIs. The library focuses on simplicity, reliability, and extensibility.
+Xtream.Client is a .NET 9 library that provides a client for interacting with Xtream-based IPTV APIs. The library focuses on simplicity, reliability, and extensibility.
 
 ## Architecture
 
@@ -26,7 +26,7 @@ Xtream.Client is a .NET Standard library that provides a client for interacting 
 
 ### C# Style
 
-- Use C# 7.1 language features (project targets .NET Standard 2.0)
+- Use latest C# language features (project targets .NET 9)
 - Follow Microsoft's C# coding conventions
 - Use XML documentation comments for public APIs
 - Prefer `readonly` fields where applicable
@@ -156,7 +156,7 @@ dotnet test -p:CollectCoverage=true -p:CoverletOutputFormat=opencover
 ### CI/CD
 
 The project uses Azure Pipelines for continuous integration. The pipeline:
-- Runs on Ubuntu 16.04
+- Runs on Ubuntu latest with .NET 9 SDK
 - Executes `dotnet restore`, `dotnet build`, and `dotnet test`
 - Generates code coverage reports
 - Publishes NuGet packages on tagged releases
@@ -198,7 +198,7 @@ public class CustomHttpClientFactory : IHttpClientFactory
 
 ### Issue: Test Runtime Errors
 
-**Solution**: Ensure correct .NET runtime is installed. Tests target .NET Core 3.1.
+**Solution**: Ensure correct .NET runtime is installed. Tests target .NET 9.
 
 ## Versioning and Releases
 
@@ -235,7 +235,7 @@ When adding features:
 ## Resources
 
 - [Xtream API Documentation](https://xtream-codes.com/api)
-- [.NET Standard Documentation](https://docs.microsoft.com/en-us/dotnet/standard/)
+- [.NET 9 Documentation](https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-9/)
 - [xUnit Documentation](https://xunit.net/)
 - [Moq Documentation](https://github.com/moq/moq4)
 
